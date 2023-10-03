@@ -39,7 +39,7 @@ def recursive_solve(board, row, solutions):
     Args:
         board (list): The current working chessboard.
         row (int): The current working row.
-        solutions (list): A list of lists of solutions.
+        solutions (list): A list of solutions.
     Returns:
         solutions
     """
@@ -57,10 +57,12 @@ def recursive_solve(board, row, solutions):
 
 
 def get_solution(board):
-    """Return the list of lists representation of a solved chessboard."""
+    """Return the solution as a list of [row, column] pairs."""
     solution = []
-    for row in board:
-        solution.append([row.index('Q') for _ in row])
+    for row in range(len(board)):
+        for col in range(len(board)):
+            if board[row][col] == 'Q':
+                solution.append([row, col])
     return solution
 
 
