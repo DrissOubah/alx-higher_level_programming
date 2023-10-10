@@ -6,8 +6,8 @@ and prints it to stdout
 
 
 def read_file(filename=""):
-        """reads a text file UTF8"""
+        #reads a text file UTF8
         with open(filename, encoding="utf-8") as f:
                 read_data = f.read()
-        """prints it to stdout"""
+        #prints it to stdout
         print(read_data)
