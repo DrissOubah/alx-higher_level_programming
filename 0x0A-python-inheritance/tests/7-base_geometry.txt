@@ -1,0 +1,47 @@
+The ``7-base_geometry`` module
+======================
+
+Using ``BaseGeometry``
+-------------------
+
+# Import the BaseGeometry class
+>>> BaseGeometry = __import__('7-base_geometry').BaseGeometry
+
+# Instantiate BaseGeometry object
+>>> geometry = BaseGeometry()
+
+# Test area() method, it should raise an Exception
+>>> try:
+...     geometry.area()
+... except Exception as e:
+...     print(e)
+...
+area() is not implemented
+
+# Test integer_validator method with valid input
+>>> geometry.integer_validator("width", 10)
+>>> geometry.integer_validator("height", 5)
+
+# Test integer_validator method with non-integer input
+>>> try:
+...     geometry.integer_validator("size", "invalid")
+... except Exception as e:
+...     print(e)
+...
+size must be an integer
+
+# Test integer_validator method with negative value
+>>> try:
+...     geometry.integer_validator("length", -2)
+... except Exception as e:
+...     print(e)
+...
+length must be greater than 0
+
+# Test integer_validator method with zero value
+>>> try:
+...     geometry.integer_validator("depth", 0)
+... except Exception as e:
+...     print(e)
+...
+depth must be greater than 0
