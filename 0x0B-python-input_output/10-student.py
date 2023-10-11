@@ -21,6 +21,6 @@ class Student:
         for x in attrs:
             try:
                 new_dict[x] = self.__dict__[x]
-            except:
+            except KeyError:
                 pass
         return new_dict
