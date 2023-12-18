@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     c = db.cursor()
     c.execute("SELECT * FROM states WHERE name = (%s)\
-    ORDER BY states.id ASC", state_name)
+    ORDER BY states.id ASC", (state_name,))
     table = c.fetchall()
 
     for row in table:
