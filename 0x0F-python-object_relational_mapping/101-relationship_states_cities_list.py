@@ -17,14 +17,16 @@ if __name__ == "__main__":
 
     # Check if the correct number of command-line arguments is provided
     if len(argv) != 4:
-        print("Usage: {} <username> <password> <database_name>".format(argv[0]))
+        print("Usage: {} <username> <password> <database_name>".format(
+            argv[0]))
         exit(1)
 
     # Get command-line arguments
     username, password, database_name = argv[1], argv[2], argv[3]
 
     # Construct the database URI
-    db_url = 'mysql+mysqldb://{}:{}@localhost:3306/{}'.format(username, password, database_name)
+    db_url = 'mysql+mysqldb://{}:{}@localhost:3306/{}'.format
+    (username, password, database_name)
 
     # Create an SQLAlchemy engine
     engine = create_engine(db_url)
@@ -36,7 +38,6 @@ if __name__ == "__main__":
     session = Session()
 
     try:
-        # Use a single query to retrieve State and City objects with the relationship
         states = session.query(State).order_by(State.id).all()
 
         # Display the results
