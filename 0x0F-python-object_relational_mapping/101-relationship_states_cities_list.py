@@ -1,27 +1,51 @@
 #!/usr/bin/python3
 """
-A script that lists all states in the database.
+Script that lists all State objects, and corresponding City objects,
+contained in the database hbtn_0e_101_usa.
 """
-from relationship_city import Base, City
-from relationship_state import State
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-import sys
 
+from sys import argv
+from model_state import Base, State
+from model_city import City
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 if __name__ == "__main__":
+    """
+    Lists all State objects and corresponding City objects from the database.
+    """
 
-    host, password, name = sys.argv[1:]
-    uri = f"mysql+mysqldb://{host}:{password}@localhost/{name}"
-    engine = create_engine(uri, pool_pre_ping=True)
+    # Check if the correct number of command-line arguments is provided
+    if len(argv) != 4:
+        print("Usage: {} <username> <password> <database_name>".format(argv[0]))
+        exit(1)
 
-    session = sessionmaker(bind=engine)()
-    query = (
-        session.query(State).join(City)
-        .order_by(State.id, City.id)
-    )
+    # Get command-line arguments
+    username, password, database_name = argv[1], argv[2], argv[3]
 
-    for state in query:
-        print(f"{state.id}: {state.name}")
-        for city in state.cities:
-            print(f"\t{city.id}: {city.name}")
+    # Construct the database URI
+    db_url = 'mysql+mysqldb://{}:{}@localhost:3306/{}'.format(username, password, database_name)
+
+    # Create an SQLAlchemy engine
+    engine = create_engine(db_url)
+
+    # Create a session factory
+    Session = sessionmaker(bind=engine)
+
+    # Create a session
+    session = Session()
+
+    try:
+        # Use a single query to retrieve State and City objects with the relationship
+        states = session.query(State).order_by(State.id).all()
+
+        # Display the results
+        for state in states:
+            print("{}: {}".format(state.id, state.name))
+            for city in state.cities:
+                print("    {}: {}".format(city.id, city.name))
+
+    finally:
+        # Close the session
+        if session:
+            session.close()
