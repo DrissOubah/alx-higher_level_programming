@@ -15,4 +15,5 @@ class Square extends LastSquare {
     }
   }
 }
+
 module.exports = Square;
