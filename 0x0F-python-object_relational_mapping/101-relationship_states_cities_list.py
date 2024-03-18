@@ -25,8 +25,8 @@ if __name__ == "__main__":
     username, password, database_name = argv[1], argv[2], argv[3]
 
     # Construct the database URI
-    db_url = 'mysql+mysqldb://{}:{}@localhost:3306/{}'.format
-    (username, password, database_name)
+    db_url = 'mysql+mysqldb://{}:{}@localhost:3306/{}'.format(
+        username, password, database_name)
 
     # Create an SQLAlchemy engine
     engine = create_engine(db_url)
@@ -40,13 +40,10 @@ if __name__ == "__main__":
     try:
         states = session.query(State).order_by(State.id).all()
 
-        # Display the results
         for state in states:
             print("{}: {}".format(state.id, state.name))
             for city in state.cities:
                 print("    {}: {}".format(city.id, city.name))
 
     finally:
-        # Close the session
-        if session:
-            session.close()
+        session.close()
