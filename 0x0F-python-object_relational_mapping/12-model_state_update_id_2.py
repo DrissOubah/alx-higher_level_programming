@@ -17,11 +17,13 @@ if __name__ == "__main__":
     db = 'mysql+mysqldb://{}:{}@localhost:3306/{}'.format(
         argv[1], argv[2], argv[3])
     engine = create_engine(db)
-    sess = sessionmaker(bind=engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
-    session_m = sess()
+    state_to_update = session.query(State).filter(State.id == 2).first()
 
-    state_to_update = session.query(State).filter(State.id == '2').first()
-    state_to_update = 'New Mexico'
-    session_m.commit()
-    session_m.close()
+    if state_to_update:
+        state_to_update.name = 'New Mexico'
+        session.commit()
+
+    session.close()
