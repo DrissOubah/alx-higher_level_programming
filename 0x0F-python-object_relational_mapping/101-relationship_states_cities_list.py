@@ -11,39 +11,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 if __name__ == "__main__":
-    """
-    Lists all State objects and corresponding City objects from the database.
-    """
+    engine = create_engine("mysql+mysqldb://{}:{}@localhost/{}".format(
+        sys.argv[1], sys.argv[2], sys.argv[3]), pool_pre_ping=True)
+    Base.metadata.create_all(engine)
+    session_maker = sessionmaker(bind=engine)
+    session = session_maker()
 
-    # Check if the correct number of command-line arguments is provided
-    if len(argv) != 4:
-        print("Usage: {} <username> <password> <database_name>".format(
-            argv[0]))
-        exit(1)
-
-    # Get command-line arguments
-    username, password, database_name = argv[1], argv[2], argv[3]
-
-    # Construct the database URI
-    db_url = 'mysql+mysqldb://{}:{}@localhost:3306/{}'.format(
-        username, password, database_name)
-
-    # Create an SQLAlchemy engine
-    engine = create_engine(db_url)
-
-    # Create a session factory
-    Session = sessionmaker(bind=engine)
-
-    # Create a session
-    session = Session()
-
-    try:
-        states = session.query(State).order_by(State.id).all()
-
-        for state in states:
-            print("{}: {}".format(state.id, state.name))
-            for city in state.cities:
-                print("    {}: {}".format(city.id, city.name))
-
-    finally:
-        session.close()
+    for state in session.query(State).order_by(State.id).all():
+        print("{}: {}".format(state.id, state.name))
+        for city in state.cities:
+            print("\t{}: {}".format(city.id, city.name))
+    session.close()
+    engine.dispose()
