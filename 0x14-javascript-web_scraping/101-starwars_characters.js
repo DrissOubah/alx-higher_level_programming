@@ -1,4 +1,5 @@
 #!/usr/bin/node
+// Script that prints all characters of a Star Wars movie
 
 const request = require('request'); // Import the 'request' module for making HTTP requests
 const id = process.argv[2]; // Get the movie ID from the command-line arguments
